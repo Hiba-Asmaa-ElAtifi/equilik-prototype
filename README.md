@@ -10,9 +10,9 @@ Prototype mobile premium pour la réservation d'expériences équestres: balades
 
 ## Interactions
 
-| Choix du lieu | Calendrier | Réservation |
-| --- | --- | --- |
-| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Réservation](docs/screenshots/booking-details.png) |
+| Choix du lieu | Calendrier | Filtres | Réservation |
+| --- | --- | --- | --- |
+| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Filtres](docs/screenshots/filter-modal.png) | ![Réservation](docs/screenshots/booking-details.png) |
 
 ## Interfaces
 
@@ -36,6 +36,10 @@ Modale centrée avec fond flou, recherche de club ou de ville, suggestions de li
 
 Calendrier modal centré avec overlay flouté, sélection de date en mai 2024 et actions Annuler / Confirmer. Le format reste volontairement compact pour ne pas prendre trop d'espace sur l'écran mobile.
 
+### Filtres
+
+Bottom sheet premium ouvert depuis Balades ou Séances. Il permet d'affiner la recherche par niveau, durée, type de balade, nombre de cavaliers, budget, expérience, popularité et coach, avec des états sélectionnés dorés et une action principale Voir les résultats.
+
 ### Réservation
 
 Page de réservation premium générée dynamiquement après un clic sur Réserver ou Choisir. Elle reprend l'image de l'activité, le titre, le niveau, la durée, le coach, le prix, les détails modifiables, le nombre de participants, les informations client, les notes optionnelles, le total et le bouton de confirmation.
@@ -46,6 +50,7 @@ Page de réservation premium générée dynamiquement après un clic sur Réserv
 - Onglets Balades, Séances et Abonnements.
 - Saisie interactive du lieu de départ.
 - Calendrier modal centré avec fond flou.
+- Filtres premium en bottom sheet avec options interactives.
 - Page de réservation premium dynamique selon la balade, la séance ou l'abonnement choisi.
 - Cartes de balades et séances avec images, prix et détails.
 - Sélection interactive d'une formule d'abonnement.

@@ -5,6 +5,7 @@ import BookingCard       from '../../components/reservations/BookingCard'
 import SeanceCard        from '../../components/reservations/SeanceCard'
 import SubscriptionPlans from '../../components/reservations/SubscriptionPlans'
 import BottomNav         from '../../components/reservations/BottomNav'
+import FilterModal       from '../../components/reservations/FilterModal'
 import BookingPage       from '../Booking/BookingPage'
 import './Reservations.css'
 
@@ -170,6 +171,7 @@ export default function Reservations() {
   const [selectedDate,  setSelectedDate]  = useState(2)
   const [locationOpen,  setLocationOpen]  = useState(false)
   const [calendarOpen,  setCalendarOpen]  = useState(false)
+  const [filtersOpen,   setFiltersOpen]   = useState(false)
   const [locationValue, setLocationValue] = useState('Haras des Bois')
   const [draftLocation, setDraftLocation] = useState('Haras des Bois')
   const [calendarValue, setCalendarValue] = useState('2024-05-24')
@@ -288,7 +290,7 @@ export default function Reservations() {
               {BALADES.map(b => <BookingCard key={b.id} booking={b} onReserve={(item) => openBooking('balade', item)} />)}
             </section>
             <div className="res-actions">
-              <button className="res-actions__filters"><FiltersIcon /> Filtres</button>
+              <button className="res-actions__filters" onClick={() => setFiltersOpen(true)}><FiltersIcon /> Filtres</button>
               <button className="res-actions__planning">Voir le planning <ArrowRight /></button>
             </div>
           </>
@@ -300,7 +302,7 @@ export default function Reservations() {
             <section className="res-list">
               <div className="res-list__header">
                 <p className="res-list__title">Séances disponibles</p>
-                <button className="res-list__filter-btn"><FiltersIcon /> Filtrer <ChevRight /></button>
+                <button className="res-list__filter-btn" onClick={() => setFiltersOpen(true)}><FiltersIcon /> Filtrer <ChevRight /></button>
               </div>
               {SEANCES.map(s => <SeanceCard key={s.id} seance={s} onReserve={(item) => openBooking('seance', item)} />)}
             </section>
@@ -409,6 +411,8 @@ export default function Reservations() {
           </div>
         </div>
       )}
+
+      <FilterModal open={filtersOpen} onClose={() => setFiltersOpen(false)} />
     </div>
   )
 }
