@@ -10,9 +10,13 @@ Prototype mobile premium pour la réservation d'expériences équestres: balades
 
 ## Interactions
 
-| Choix du lieu | Calendrier | Filtres Balades | Filtres Séances | Réservation |
-| --- | --- | --- | --- | --- |
-| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Filtres Balades](docs/screenshots/filter-balades.png) | ![Filtres Séances](docs/screenshots/filter-seances.png) | ![Réservation](docs/screenshots/booking-details.png) |
+| Choix du lieu | Calendrier | Filtres Balades | Filtres Séances |
+| --- | --- | --- | --- |
+| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Filtres Balades](docs/screenshots/filter-balades.png) | ![Filtres Séances](docs/screenshots/filter-seances.png) |
+
+| Offres abonnements | Réservation |
+| --- | --- |
+| ![Offres abonnements](docs/screenshots/subscription-offers.png) | ![Réservation](docs/screenshots/booking-details.png) |
 
 ## Interfaces
 
@@ -26,7 +30,7 @@ Interface dédiée aux séances encadrées avec les mêmes codes premium: hero i
 
 ### Abonnements
 
-Interface des formules mensuelles avec banner premium, visuel équestre de marque, cartes tarifaires, avantages inclus et FAQ. Chaque formule peut être sélectionnée et transformée en réservation via le même écran premium.
+Parcours en deux écrans. La landing Abonnements présente une expérience de club premium avec carte promotionnelle, bénéfices et témoignage. Le bouton Voir les offres ouvre une page dédiée aux formules avec bénéfices, cartes d'abonnement, tableau comparatif, réassurance et CTA de sélection.
 
 ### Choix du lieu
 
@@ -53,7 +57,7 @@ Page de réservation premium générée dynamiquement après un clic sur Réserv
 - Filtres premium en bottom sheet avec options interactives.
 - Page de réservation premium dynamique selon la balade, la séance ou l'abonnement choisi.
 - Cartes de balades et séances avec images, prix et détails.
-- Sélection interactive d'une formule d'abonnement.
+- Parcours Abonnements en deux écrans: landing immersive puis page offres.
 
 ## Lancer le projet
 
