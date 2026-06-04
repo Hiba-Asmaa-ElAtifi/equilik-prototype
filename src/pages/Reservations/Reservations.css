@@ -680,6 +680,13 @@
   animation: filterSlideUp .32s cubic-bezier(.2,.9,.2,1) both;
 }
 
+.filter-modal--seances .filter-modal__sheet {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(18,60,140,.28), transparent 28%),
+    radial-gradient(circle at 94% 16%, rgba(212,163,115,.16), transparent 36%),
+    linear-gradient(180deg, rgba(12,33,58,.98), rgba(5,15,29,.99) 58%, rgba(4,12,24,.99));
+}
+
 .filter-modal__handle {
   width: 54px;
   height: 5px;
@@ -852,7 +859,7 @@
 
 .filter-riders {
   display: grid;
-  grid-template-columns: 42px repeat(8, 1fr) 42px;
+  grid-template-columns: 42px 1.4fr repeat(8, 1fr) 42px;
   align-items: center;
   gap: 3px;
   min-height: 56px;
@@ -869,8 +876,104 @@
   background: transparent;
   color: rgba(246,247,249,.82);
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   transition: background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.filter-time-slots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.filter-time-slot {
+  min-height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.035);
+  color: rgba(246,247,249,.76);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.filter-time-slot svg {
+  width: 16px;
+  height: 16px;
+}
+
+.filter-time-slot--active {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  border-color: transparent;
+  color: var(--navy);
+  font-weight: 800;
+  box-shadow: 0 10px 26px rgba(212,163,115,.22);
+}
+
+.filter-time-slot:active {
+  transform: scale(.98);
+}
+
+.filter-block--split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.filter-toggle {
+  min-height: 48px;
+  width: 100%;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.035);
+  color: rgba(246,247,249,.78);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 0 10px 0 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.filter-toggle span {
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(246,247,249,.14);
+  position: relative;
+  flex-shrink: 0;
+  transition: background .18s ease;
+}
+
+.filter-toggle span::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(246,247,249,.86);
+  transition: transform .18s ease, background .18s ease;
+}
+
+.filter-toggle--active {
+  border-color: rgba(212,163,115,.44);
+  color: var(--gold-light);
+}
+
+.filter-toggle--active span {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+}
+
+.filter-toggle--active span::after {
+  transform: translateX(18px);
+  background: white;
 }
 
 .filter-riders > button:first-child,
@@ -996,6 +1099,12 @@
   color: rgba(246,247,249,.74);
 }
 
+.filter-select__sort {
+  color: var(--gold);
+  font-size: 22px;
+  line-height: 1;
+}
+
 .filter-select svg:first-child {
   color: var(--gold);
 }
@@ -1090,11 +1199,15 @@
   }
 
   .filter-riders {
-    grid-template-columns: 38px repeat(8, 1fr) 38px;
+    grid-template-columns: 38px 1.25fr repeat(8, 1fr) 38px;
   }
 
   .filter-popularity {
     grid-template-columns: 1fr;
+  }
+
+  .filter-time-slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1220,6 +1333,20 @@
   transition: background .2s;
 }
 .res-list__filter-btn:active { background: rgba(255,255,255,.1); }
+
+.filter-empty {
+  margin: 0 14px 18px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(212,163,115,.2);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(212,163,115,.12), transparent 42%),
+    rgba(255,255,255,.035);
+  color: rgba(246,247,249,.72);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
 
 /* ═══════════════════════════════════════════════════
    BOOKING CARD  (Balades)

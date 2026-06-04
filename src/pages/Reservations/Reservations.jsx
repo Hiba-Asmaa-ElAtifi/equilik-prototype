@@ -5,7 +5,7 @@ import BookingCard       from '../../components/reservations/BookingCard'
 import SeanceCard        from '../../components/reservations/SeanceCard'
 import SubscriptionPlans from '../../components/reservations/SubscriptionPlans'
 import BottomNav         from '../../components/reservations/BottomNav'
-import FilterModal       from '../../components/reservations/FilterModal'
+import FilterModal, { BALADE_FILTER_DEFAULTS, SEANCE_FILTER_DEFAULTS } from '../../components/reservations/FilterModal'
 import BookingPage       from '../Booking/BookingPage'
 import './Reservations.css'
 
@@ -38,10 +38,13 @@ const LOCATION_LABEL = {
 /* ── Mock data ───────────────────────────────────────────────────── */
 const BALADES = [
   { id:1, title:'Balade en forêt',      level:'Tous niveaux',       duration:'1h30', maxRiders:6, price:450, popular:true,
+    type:'Forêt', durationMinutes:90, experiences:['Relaxation','Découverte'], popularity:'Les plus populaires', rating:4.9, coach:'Camille D.',
     image: imgForest,  fallback:'linear-gradient(160deg,#0b2a14 0%,#1a4a22 45%,#0d3016 100%)' },
   { id:2, title:'Balade plage & dunes', level:'Intermédiaire et +', duration:'2h00', maxRiders:8, price:600, popular:false,
+    type:'Plage', durationMinutes:120, experiences:['Sportive','Luxe / VIP'], popularity:'Les mieux notées', rating:4.8, coach:'Julie M.',
     image: imgBeach,   fallback:'linear-gradient(160deg,#0a1e3c 0%,#1a3a60 45%,#102848 100%)' },
   { id:3, title:'Balade campagne',      level:'Tous niveaux',       duration:'1h45', maxRiders:6, price:500, popular:false,
+    type:'Campagne', durationMinutes:105, experiences:['Relaxation','Découverte'], popularity:'Tous', rating:4.6, coach:'Thomas L.',
     image: imgCountry, fallback:'linear-gradient(160deg,#1a2c0c 0%,#354e18 45%,#263810 100%)' },
 ]
 
@@ -50,6 +53,7 @@ const SEANCES = [
     id:1, time:'09:00', title:'Dressage – Confirmé',
     level:'Confirmé', levelKey:'confirme',
     duration:'1h00', maxRiders:4, price:550,
+    durationMinutes:60, discipline:'Dressage', horseLevel:'Calme', timeSlot:'Morning', available:true, popularity:3,
     image: imgDressageC, fallback:'linear-gradient(160deg,#14102a 0%,#2a1e50 45%,#0e0e20 100%)',
     coach:'Thomas L.', coachTitle:'Coach diplômé', coachImage: coachThomas,
   },
@@ -57,6 +61,7 @@ const SEANCES = [
     id:2, time:'11:00', title:'Obstacle – Intermédiaire',
     level:'Intermédiaire', levelKey:'intermediaire',
     duration:'1h15', maxRiders:6, price:600,
+    durationMinutes:75, discipline:'Obstacle', horseLevel:'Sportif', timeSlot:'Morning', available:true, popularity:2,
     image: imgObstacle, fallback:'linear-gradient(160deg,#2a1008 0%,#4a1e10 45%,#301408 100%)',
     coach:'Julie M.', coachTitle:'Coach diplômée', coachImage: coachJulie,
   },
@@ -64,6 +69,7 @@ const SEANCES = [
     id:3, time:'14:00', title:'Dressage – Débutant',
     level:'Débutant', levelKey:'debutant',
     duration:'1h00', maxRiders:5, price:500,
+    durationMinutes:60, discipline:'Dressage', horseLevel:'Énergique', timeSlot:'Afternoon', available:true, popularity:1,
     image: imgDressageB, fallback:'linear-gradient(160deg,#0e1e0e 0%,#1c3418 45%,#122010 100%)',
     coach:'Camille D.', coachTitle:'Coach diplômée', coachImage: coachCamille,
   },
@@ -165,6 +171,60 @@ function normalizeBooking(type, item) {
   }
 }
 
+function matchesBaladeDuration(filter, minutes) {
+  if (filter === 'Toutes durées') return true
+  if (filter === "Moins d'1h") return minutes < 60
+  if (filter === '1h – 2h') return minutes >= 60 && minutes <= 120
+  if (filter === '2h – 4h') return minutes > 120 && minutes <= 240
+  return minutes > 240
+}
+
+function matchesSeanceDuration(filter, minutes) {
+  if (filter === 'Toutes durées') return true
+  if (filter === '<1h') return minutes < 60
+  if (filter === '1h–1h30') return minutes >= 60 && minutes <= 90
+  if (filter === '1h30–2h') return minutes > 90 && minutes <= 120
+  return minutes > 120
+}
+
+function matchesLevel(filter, itemLevel) {
+  if (filter === 'Tous niveaux') return true
+  if (filter === 'Débutant') return itemLevel.includes('Débutant') || itemLevel.includes('Tous')
+  if (filter === 'Intermédiaire') return itemLevel.includes('Intermédiaire') || itemLevel.includes('Tous')
+  return itemLevel.includes('Confirmé')
+}
+
+function filterBalades(items, filters) {
+  return items.filter((item) => (
+    matchesLevel(filters.level, item.level)
+    && (filters.rideType === 'Tous' || item.type === filters.rideType)
+    && matchesBaladeDuration(filters.duration, item.durationMinutes)
+    && (filters.riders === 'Tous' || item.maxRiders >= filters.riders)
+    && item.price <= filters.budget
+    && (filters.experience === 'Toutes' || item.experiences.includes(filters.experience))
+    && (filters.popularity === 'Tous' || item.popularity === filters.popularity || (filters.popularity === 'Les plus populaires' && item.popular))
+    && (filters.coach === 'Tous les coachs' || item.coach === filters.coach)
+  ))
+}
+
+function filterSeances(items, filters) {
+  const filtered = items.filter((item) => (
+    matchesLevel(filters.level, item.level)
+    && (filters.discipline === 'Toutes' || item.discipline === filters.discipline || (filters.discipline === "Saut d'obstacles" && item.discipline === 'Obstacle'))
+    && matchesSeanceDuration(filters.duration, item.durationMinutes)
+    && (filters.riders === 'Tous' || item.maxRiders >= filters.riders)
+    && (filters.timeSlot === 'Tous' || item.timeSlot === filters.timeSlot)
+    && (filters.coach === 'Tous les coachs' || item.coach === filters.coach)
+    && (filters.horseLevel === 'Tous' || item.horseLevel === filters.horseLevel)
+    && (!filters.availableOnly || item.available)
+    && item.price <= filters.price
+  ))
+
+  if (filters.sortBy === 'Prix') return [...filtered].sort((a, b) => a.price - b.price)
+  if (filters.sortBy === 'Popularité') return [...filtered].sort((a, b) => b.popularity - a.popularity)
+  return [...filtered].sort((a, b) => a.time.localeCompare(b.time))
+}
+
 /* ── Component ───────────────────────────────────────────────────── */
 export default function Reservations() {
   const [activeTab,     setActiveTab]     = useState('balades')
@@ -180,12 +240,21 @@ export default function Reservations() {
   const [participants,  setParticipants]  = useState(1)
   const [userInfo,      setUserInfo]      = useState({ name: '', email: '', phone: '' })
   const [notes,         setNotes]         = useState('')
+  const [baladeFilters, setBaladeFilters] = useState(BALADE_FILTER_DEFAULTS)
+  const [seanceFilters, setSeanceFilters] = useState(SEANCE_FILTER_DEFAULTS)
 
   const isBalades     = activeTab === 'balades'
   const isSeances     = activeTab === 'seances'
   const isAbonnements = activeTab === 'abonnements'
 
   const { title, subtitle, img } = HERO[activeTab]
+  const filteredBalades = filterBalades(BALADES, baladeFilters)
+  const filteredSeances = filterSeances(SEANCES, seanceFilters)
+  const activeFilters = isSeances ? seanceFilters : baladeFilters
+  const applyFilters = (nextFilters) => {
+    if (isSeances) setSeanceFilters(nextFilters)
+    else setBaladeFilters(nextFilters)
+  }
 
   const openBooking = (type, item) => {
     const nextBooking = normalizeBooking(type, item)
@@ -285,9 +354,13 @@ export default function Reservations() {
             <section className="res-list">
               <div className="res-list__header">
                 <p className="res-list__title">Balades disponibles</p>
-                <p className="res-list__count">3 balades disponibles</p>
+                <p className="res-list__count">{filteredBalades.length} balade{filteredBalades.length > 1 ? 's' : ''} disponible{filteredBalades.length > 1 ? 's' : ''}</p>
               </div>
-              {BALADES.map(b => <BookingCard key={b.id} booking={b} onReserve={(item) => openBooking('balade', item)} />)}
+              {filteredBalades.length > 0 ? (
+                filteredBalades.map(b => <BookingCard key={b.id} booking={b} onReserve={(item) => openBooking('balade', item)} />)
+              ) : (
+                <div className="filter-empty">Aucune balade ne correspond à ces critères.</div>
+              )}
             </section>
             <div className="res-actions">
               <button className="res-actions__filters" onClick={() => setFiltersOpen(true)}><FiltersIcon /> Filtres</button>
@@ -302,9 +375,14 @@ export default function Reservations() {
             <section className="res-list">
               <div className="res-list__header">
                 <p className="res-list__title">Séances disponibles</p>
+                <p className="res-list__count">{filteredSeances.length} séance{filteredSeances.length > 1 ? 's' : ''}</p>
                 <button className="res-list__filter-btn" onClick={() => setFiltersOpen(true)}><FiltersIcon /> Filtrer <ChevRight /></button>
               </div>
-              {SEANCES.map(s => <SeanceCard key={s.id} seance={s} onReserve={(item) => openBooking('seance', item)} />)}
+              {filteredSeances.length > 0 ? (
+                filteredSeances.map(s => <SeanceCard key={s.id} seance={s} onReserve={(item) => openBooking('seance', item)} />)
+              ) : (
+                <div className="filter-empty">Aucune séance ne correspond à ces critères.</div>
+              )}
             </section>
             <div className="res-upsell">
               <div className="res-upsell__icon"><CrownSmall /></div>
@@ -412,7 +490,13 @@ export default function Reservations() {
         </div>
       )}
 
-      <FilterModal open={filtersOpen} onClose={() => setFiltersOpen(false)} />
+      <FilterModal
+        open={filtersOpen}
+        mode={activeTab}
+        filters={activeFilters}
+        onApply={applyFilters}
+        onClose={() => setFiltersOpen(false)}
+      />
     </div>
   )
 }

@@ -10,9 +10,9 @@ Prototype mobile premium pour la réservation d'expériences équestres: balades
 
 ## Interactions
 
-| Choix du lieu | Calendrier | Filtres | Réservation |
-| --- | --- | --- | --- |
-| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Filtres](docs/screenshots/filter-modal.png) | ![Réservation](docs/screenshots/booking-details.png) |
+| Choix du lieu | Calendrier | Filtres Balades | Filtres Séances | Réservation |
+| --- | --- | --- | --- | --- |
+| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Filtres Balades](docs/screenshots/filter-balades.png) | ![Filtres Séances](docs/screenshots/filter-seances.png) | ![Réservation](docs/screenshots/booking-details.png) |
 
 ## Interfaces
 
@@ -38,7 +38,7 @@ Calendrier modal centré avec overlay flouté, sélection de date en mai 2024 et
 
 ### Filtres
 
-Bottom sheet premium ouvert depuis Balades ou Séances. Il permet d'affiner la recherche par niveau, durée, type de balade, nombre de cavaliers, budget, expérience, popularité et coach, avec des états sélectionnés dorés et une action principale Voir les résultats.
+Deux bottom sheets premium distincts sont utilisés. Les filtres Balades sont orientés exploration, paysages, type de balade, expérience outdoor, budget et groupe. Les filtres Séances sont orientés entraînement, discipline, niveau technique, créneau horaire, coach, niveau du cheval, disponibilités et tri. Les critères appliqués filtrent réellement les cartes affichées.
 
 ### Réservation
 
