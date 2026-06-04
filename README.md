@@ -10,9 +10,9 @@ Prototype mobile premium pour la réservation d'expériences équestres: balades
 
 ## Interactions
 
-| Choix du lieu | Calendrier |
-| --- | --- |
-| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) |
+| Choix du lieu | Calendrier | Réservation |
+| --- | --- | --- |
+| ![Choix du lieu](docs/screenshots/location-modal.png) | ![Calendrier](docs/screenshots/calendar-modal.png) | ![Réservation](docs/screenshots/booking-details.png) |
 
 ## Fonctionnalités
 
@@ -20,6 +20,7 @@ Prototype mobile premium pour la réservation d'expériences équestres: balades
 - Onglets Balades, Séances et Abonnements.
 - Saisie interactive du lieu de départ.
 - Calendrier modal centré avec fond flou.
+- Page de réservation premium dynamique selon la balade, la séance ou l'abonnement choisi.
 - Cartes de balades et séances avec images, prix et détails.
 - Sélection interactive d'une formule d'abonnement.
 

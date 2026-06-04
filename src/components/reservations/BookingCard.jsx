@@ -11,9 +11,9 @@ function ArrowIcon() {
   return <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 
-export default function BookingCard({ booking }) {
+export default function BookingCard({ booking, onReserve }) {
   return (
-    <div className="booking-card">
+    <div className="booking-card" onClick={() => onReserve?.(booking)}>
       <div className="booking-card__image" style={{ background: booking.fallback }}>
         <img
           src={booking.image}
@@ -47,7 +47,10 @@ export default function BookingCard({ booking }) {
             <span className="booking-card__meta-item"><ClockIcon /> {booking.duration}</span>
             <span className="booking-card__meta-item"><RidersIcon /> Max. {booking.maxRiders} cavaliers</span>
           </div>
-          <button className="booking-card__arrow" aria-label="Voir détails"><ArrowIcon /></button>
+          <button className="booking-card__arrow" aria-label="Réserver" onClick={(event) => {
+            event.stopPropagation()
+            onReserve?.(booking)
+          }}><ArrowIcon /></button>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import BookingCard       from '../../components/reservations/BookingCard'
 import SeanceCard        from '../../components/reservations/SeanceCard'
 import SubscriptionPlans from '../../components/reservations/SubscriptionPlans'
 import BottomNav         from '../../components/reservations/BottomNav'
+import BookingPage       from '../Booking/BookingPage'
 import './Reservations.css'
 
 /* ── Image imports — place your files in src/assets/reservations/ ── */
@@ -19,6 +20,7 @@ import imgDressageB from '../../assets/reservations/session-dressage-beginner.jp
 import coachThomas  from '../../assets/reservations/coach-thomas.jpg'
 import coachJulie   from '../../assets/reservations/coach-julie.jpg'
 import coachCamille from '../../assets/reservations/coach-camille.jpg'
+import subBanner    from '../../assets/reservations/subscription-banner.jpg'
 
 /* ── Hero config ─────────────────────────────────────────────────── */
 const HERO = {
@@ -81,6 +83,9 @@ const SUGGESTED_LOCATIONS = [
   { name: 'Écuries de la Palmeraie', icon: 'horse' },
 ]
 
+const WEEKDAY_LABELS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+const MONTH_LABELS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+
 /* ── Icons ───────────────────────────────────────────────────────── */
 const BackIcon    = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 const BellIcon    = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
@@ -109,6 +114,56 @@ function LocationSuggestionIcon({ type }) {
   return <HorseshoeSmall />
 }
 
+function formatDateLabel(value) {
+  const date = new Date(`${value}T12:00:00`)
+  if (Number.isNaN(date.getTime())) return 'Vendredi 24 mai 2024'
+  return `${WEEKDAY_LABELS[date.getDay()]} ${date.getDate()} ${MONTH_LABELS[date.getMonth()]} ${date.getFullYear()}`
+}
+
+function getBookingHero(type, booking) {
+  if (type === 'abonnement') return subBanner
+  if (type === 'seance') return heroSeances
+  if (booking?.image) return booking.image
+  return heroBalades
+}
+
+function normalizeBooking(type, item) {
+  if (type === 'seance') {
+    return {
+      ...item,
+      bookingType: type,
+    }
+  }
+
+  if (type === 'abonnement') {
+    return {
+      id: item.id,
+      bookingType: type,
+      title: `Abonnement ${item.name}`,
+      level: item.popular ? 'Formule populaire' : 'Formule mensuelle',
+      levelKey: 'subscription',
+      duration: item.features?.[0] || 'Accès mensuel',
+      maxRiders: 1,
+      price: item.price,
+      image: subBanner,
+      time: 'Flexible',
+      coach: 'Équipe Écline',
+      coachTitle: 'Accompagnement premium',
+      coachImage: coachCamille,
+    }
+  }
+
+  return {
+    ...item,
+    bookingType: type,
+    time: item.time || '09:00',
+    levelKey: 'standard',
+    coach: 'Équipe Écline',
+    coachTitle: 'Guide équestre',
+    coachImage: coachCamille,
+  }
+}
+
 /* ── Component ───────────────────────────────────────────────────── */
 export default function Reservations() {
   const [activeTab,     setActiveTab]     = useState('balades')
@@ -118,6 +173,11 @@ export default function Reservations() {
   const [locationValue, setLocationValue] = useState('Haras des Bois')
   const [draftLocation, setDraftLocation] = useState('Haras des Bois')
   const [calendarValue, setCalendarValue] = useState('2024-05-24')
+  const [booking,       setBooking]       = useState(null)
+  const [bookingHero,   setBookingHero]   = useState(null)
+  const [participants,  setParticipants]  = useState(1)
+  const [userInfo,      setUserInfo]      = useState({ name: '', email: '', phone: '' })
+  const [notes,         setNotes]         = useState('')
 
   const isBalades     = activeTab === 'balades'
   const isSeances     = activeTab === 'seances'
@@ -125,8 +185,43 @@ export default function Reservations() {
 
   const { title, subtitle, img } = HERO[activeTab]
 
+  const openBooking = (type, item) => {
+    const nextBooking = normalizeBooking(type, item)
+    setBooking(nextBooking)
+    setBookingHero(getBookingHero(type, nextBooking))
+    setParticipants(1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const updateUserInfo = (nextUserInfo) => {
+    setUserInfo(nextUserInfo)
+  }
+
   return (
     <div className="res-screen">
+      {booking ? (
+        <BookingPage
+          booking={booking}
+          heroImage={bookingHero}
+          location={locationValue}
+          dateLabel={formatDateLabel(calendarValue)}
+          participants={participants}
+          onParticipantsChange={setParticipants}
+          userInfo={userInfo}
+          onUserInfoChange={updateUserInfo}
+          notes={notes}
+          onNotesChange={setNotes}
+          onBack={() => setBooking(null)}
+          onEditLocation={() => {
+            setDraftLocation(locationValue)
+            setLocationOpen(true)
+          }}
+          onEditDate={() => setCalendarOpen(true)}
+          backIcon={<BackIcon />}
+          bellIcon={<BellIcon />}
+        />
+      ) : (
+        <>
 
       {/* ── Hero ─────────────────────────────────────── */}
       <header className={`res-hero res-hero--${activeTab}`}>
@@ -190,7 +285,7 @@ export default function Reservations() {
                 <p className="res-list__title">Balades disponibles</p>
                 <p className="res-list__count">3 balades disponibles</p>
               </div>
-              {BALADES.map(b => <BookingCard key={b.id} booking={b} />)}
+              {BALADES.map(b => <BookingCard key={b.id} booking={b} onReserve={(item) => openBooking('balade', item)} />)}
             </section>
             <div className="res-actions">
               <button className="res-actions__filters"><FiltersIcon /> Filtres</button>
@@ -207,7 +302,7 @@ export default function Reservations() {
                 <p className="res-list__title">Séances disponibles</p>
                 <button className="res-list__filter-btn"><FiltersIcon /> Filtrer <ChevRight /></button>
               </div>
-              {SEANCES.map(s => <SeanceCard key={s.id} seance={s} />)}
+              {SEANCES.map(s => <SeanceCard key={s.id} seance={s} onReserve={(item) => openBooking('seance', item)} />)}
             </section>
             <div className="res-upsell">
               <div className="res-upsell__icon"><CrownSmall /></div>
@@ -221,11 +316,13 @@ export default function Reservations() {
         )}
 
         {/* ── ABONNEMENTS ───────────────────────────── */}
-        {isAbonnements && <SubscriptionPlans />}
+        {isAbonnements && <SubscriptionPlans onReserve={(item) => openBooking('abonnement', item)} />}
 
       </main>
 
       <BottomNav activeItem="reservations" />
+        </>
+      )}
 
       {locationOpen && (
         <div className="res-sheet res-sheet--location" role="dialog" aria-modal="true" aria-label="Choisir un lieu">

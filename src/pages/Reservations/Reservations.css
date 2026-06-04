@@ -333,7 +333,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+  padding: 14px;
 }
 
 .res-sheet__backdrop {
@@ -347,11 +347,11 @@
 
 .res-sheet__panel {
   position: relative;
-  width: min(100%, 390px);
-  max-height: calc(100dvh - 36px);
+  width: min(100%, 360px);
+  max-height: min(86dvh, 650px);
   overflow: auto;
-  padding: 18px 18px 20px;
-  border-radius: 24px;
+  padding: 14px 14px 16px;
+  border-radius: 22px;
   background:
     radial-gradient(circle at 0% 0%, rgba(212,163,115,.2), transparent 24%),
     radial-gradient(circle at 90% 12%, rgba(18,60,140,.18), transparent 34%),
@@ -363,20 +363,20 @@
 }
 
 .res-sheet__handle {
-  width: 42px;
+  width: 38px;
   height: 4px;
   border-radius: 99px;
   background: rgba(246,247,249,.22);
-  margin: 0 auto 18px;
+  margin: 0 auto 14px;
 }
 
 .res-sheet__close,
 .res-calendar__close {
   position: absolute;
-  top: 21px;
-  right: 18px;
-  width: 42px;
-  height: 42px;
+  top: 17px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.045);
@@ -387,8 +387,8 @@
 }
 
 .res-sheet__icon {
-  width: 58px;
-  height: 58px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgba(212,163,115,.12);
   border: 1px solid rgba(212,163,115,.22);
@@ -396,7 +396,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .res-sheet__eyebrow {
@@ -405,22 +405,22 @@
   font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .res-sheet__title {
   font-family: 'Playfair Display', serif;
-  font-size: 34px;
+  font-size: clamp(28px, 7vw, 34px);
   color: white;
   line-height: 1.1;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .res-sheet__subtitle {
   color: rgba(246,247,249,.72);
-  font-size: 15px;
+  font-size: 13.5px;
   line-height: 1.45;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .res-sheet__section-label {
@@ -435,7 +435,7 @@
 .res-field {
   position: relative;
   display: block;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .res-field__icon {
@@ -449,8 +449,8 @@
 
 .res-field input {
   width: 100%;
-  height: 58px;
-  border-radius: 20px;
+  height: 54px;
+  border-radius: 18px;
   border: 1px solid rgba(212,163,115,.42);
   background: rgba(255,255,255,.045);
   color: var(--ivory);
@@ -468,18 +468,18 @@
 .res-suggestions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 9px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
 .res-suggestions button {
-  min-height: 56px;
+  min-height: 52px;
   border: 1px solid rgba(255,255,255,.13);
   background: rgba(255,255,255,.035);
   color: rgba(246,247,249,.84);
-  border-radius: 16px;
-  padding: 10px 12px;
-  font-size: 13px;
+  border-radius: 14px;
+  padding: 9px 10px;
+  font-size: 12.5px;
   font-family: 'Inter', sans-serif;
   display: flex;
   align-items: center;
@@ -504,8 +504,8 @@
 }
 
 .res-suggestion__check {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   margin-left: auto;
   border-radius: 50%;
   background: var(--gold);
@@ -517,9 +517,9 @@
 
 .res-sheet__primary {
   width: 100%;
-  height: 58px;
+  height: 54px;
   border: none;
-  border-radius: 18px;
+  border-radius: 16px;
   background: linear-gradient(130deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-dark) 100%);
   color: var(--navy);
   font-size: 16px;
@@ -536,12 +536,12 @@
   color: rgba(246,247,249,.42);
   text-align: center;
   font-size: 12px;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .res-sheet--calendar .res-sheet__panel {
-  width: min(100%, 336px);
-  padding: 18px 0 0;
+  width: min(100%, 312px);
+  padding: 16px 0 0;
   overflow: hidden;
 }
 
@@ -550,7 +550,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 18px 18px;
+  padding: 0 16px 14px;
 }
 
 .res-calendar__month {
@@ -578,24 +578,24 @@
 .res-calendar__grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding: 0 18px;
+  padding: 0 16px;
 }
 
 .res-calendar__weekdays {
   color: rgba(246,247,249,.5);
   font-size: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-align: center;
 }
 
 .res-calendar__grid {
-  row-gap: 5px;
-  padding-bottom: 16px;
+  row-gap: 4px;
+  padding-bottom: 14px;
 }
 
 .res-calendar__grid button {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   justify-self: center;
   border: none;
   border-radius: 10px;
@@ -623,7 +623,7 @@
 }
 
 .res-calendar__actions button {
-  height: 50px;
+  height: 46px;
   border: none;
   background: rgba(255,255,255,.02);
   color: rgba(246,247,249,.65);

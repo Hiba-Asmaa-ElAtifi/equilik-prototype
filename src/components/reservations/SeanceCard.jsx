@@ -11,11 +11,11 @@ const BADGE_STYLE = {
   debutant:      { bg: 'rgba(123,168,155,0.22)', color: '#7BA89B', dot: '#7BA89B' },
 }
 
-export default function SeanceCard({ seance }) {
+export default function SeanceCard({ seance, onReserve }) {
   const badge = BADGE_STYLE[seance.levelKey] || BADGE_STYLE.debutant
 
   return (
-    <div className="sc-card">
+    <div className="sc-card" onClick={() => onReserve?.(seance)}>
       {/* Image */}
       <div className="sc-card__image" style={{ background: seance.fallback }}>
         <img
@@ -67,7 +67,10 @@ export default function SeanceCard({ seance }) {
               <p className="sc-card__coach-role">{seance.coachTitle}</p>
             </div>
           </div>
-          <button className="sc-card__btn">Réserver</button>
+          <button className="sc-card__btn" onClick={(event) => {
+            event.stopPropagation()
+            onReserve?.(seance)
+          }}>Réserver</button>
         </div>
       </div>
     </div>

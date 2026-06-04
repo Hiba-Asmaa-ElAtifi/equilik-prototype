@@ -47,7 +47,7 @@ const FAQS = [
 ]
 
 /* ── Plan card ───────────────────────────────────────────────────── */
-function PlanCard({ plan, selected, onSelect }) {
+function PlanCard({ plan, selected, onSelect, onReserve }) {
   return (
     <div className={`sp-plan${plan.popular ? ' sp-plan--popular' : ''}${selected ? ' sp-plan--selected' : ''}`}>
       {plan.popular && <span className="sp-plan__badge">POPULAIRE</span>}
@@ -68,7 +68,10 @@ function PlanCard({ plan, selected, onSelect }) {
       </ul>
       <button
         className={`sp-plan__btn${plan.popular ? ' sp-plan__btn--filled' : ''}`}
-        onClick={() => onSelect(plan.id)}
+        onClick={() => {
+          onSelect(plan.id)
+          onReserve?.(plan)
+        }}
       >
         {selected ? 'Sélectionné' : 'Choisir'}
       </button>
@@ -77,7 +80,7 @@ function PlanCard({ plan, selected, onSelect }) {
 }
 
 /* ── Export ──────────────────────────────────────────────────────── */
-export default function SubscriptionPlans() {
+export default function SubscriptionPlans({ onReserve }) {
   const [openFaq, setOpenFaq] = useState(null)
   const [selectedPlan, setSelectedPlan] = useState('performance')
 
@@ -111,6 +114,7 @@ export default function SubscriptionPlans() {
             plan={p}
             selected={selectedPlan === p.id}
             onSelect={setSelectedPlan}
+            onReserve={onReserve}
           />
         ))}
       </div>
